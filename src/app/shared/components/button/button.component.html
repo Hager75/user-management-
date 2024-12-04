@@ -1,0 +1,5 @@
+<button [class]="'btn '+ extraClass()" (click)="btnClicked()" type="button">
+    @if (icon()) {
+        <i [class]="icon()"></i>
+    }
+    {{text()}}</button>

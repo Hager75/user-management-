@@ -1,4 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
-
+html,body{
+    background-color: #ececec91;
+}
+.color-primary {
+  color: #7952b3 !important;
+}
+.cursor-pointer{
+    cursor: pointer;
+}
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';

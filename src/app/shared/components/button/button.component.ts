@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  output,
+} from '@angular/core';
 
 @Component({
   selector: 'app-button',
@@ -12,5 +17,8 @@ export class ButtonComponent {
   text = input.required();
   icon = input('');
   extraClass = input('btn-main-primary');
-  btnClicked = output();
- }
+  btnClicked = output<void>();
+  onClick(): void {
+    this.btnClicked.emit();
+  }
+}

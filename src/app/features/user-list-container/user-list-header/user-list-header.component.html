@@ -1,0 +1,12 @@
+<div class="user-header shadow border py-4">
+    <div class="container pt-3">
+    <app-breadcrumb [breadcrumbs]="[
+{ label: 'Home', link: '/' },
+{ label: 'Dashboard', link: '/' }
+]"></app-breadcrumb>
+    <div class="d-flex justify-content-between align-items-center">
+        <h3 class="mb-0">User List</h3>
+        <app-button text="New User" icon="fa-solid fa-plus" extraClass="btn-main-primary px-4" (btnClicked)="onAddUser()" />
+    </div>
+    </div>
+</div>

@@ -5,5 +5,5 @@
     @if (showLoader()) {
     <span class="spinner-border spinner-border-sm me-2"></span>
     }
-    <span>{{showLoader() ? 'Loading...' : text()}}</span>
+    <span [ngClass]="icon() ? 'ms-2' : ''">{{showLoader() ? 'Loading...' : text()}}</span>
 </button>

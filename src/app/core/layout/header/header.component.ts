@@ -3,7 +3,6 @@ import { AsyncPipe } from '@angular/common';
 
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { LoginService } from '../../services/login.service';
-import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-header',

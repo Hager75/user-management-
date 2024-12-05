@@ -6,6 +6,9 @@
 .btn-outline-primary {
   border-color: #7952b3;
   border-radius: 50px;
+  &:hover{
+    background-color: transparent !important;
+  }
 }
 
 .btn-hover-white:hover{

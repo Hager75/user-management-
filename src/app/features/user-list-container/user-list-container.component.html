@@ -1,2 +1,4 @@
 <app-user-list-header/>
-<app-user-list />
+@if (!isLoading()) {
+    <app-user-list [users]="userList()" (handleUserClick)="handleUserClick($event)" />
+}

@@ -1,3 +1,16 @@
-:host {
-  display: block;
+.user-item{
+cursor: pointer;
+  &:hover{
+    background-color: #7952b3;
+    color: #fff;
+  }
+}
+
+
+.img-wrap{
+  width: 4.5rem;
+  height:4.5rem;
+  border-radius: 50%;
+  overflow: hidden;
+  object-fit: cover;
 }

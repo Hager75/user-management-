@@ -16,6 +16,8 @@ import {
 export class ButtonComponent {
   text = input.required();
   icon = input('');
+  showLoader = input(false);
+  disabled = input(false);
   extraClass = input('btn-main-primary');
   btnClicked = output<void>();
   onClick(): void {

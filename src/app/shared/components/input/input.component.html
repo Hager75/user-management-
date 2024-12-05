@@ -1,0 +1,16 @@
+<div class="mb-5" [formGroup]="form()">
+    <label [for]="title()" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{
+      title()
+    }}</label>
+    <input
+      [type]="fieldType()"
+      [id]="id()"
+      [formControlName]="control()"
+      class="form-control"
+      [placeholder]="fieldPlaceholder()"
+    />
+    @if (form().get(control())?.errors && form().get(control())?.touched) {
+      <p class="text-danger text-xs my-1 p-0">{{ errorMsg() }}</p>
+    }
+  </div>
+  

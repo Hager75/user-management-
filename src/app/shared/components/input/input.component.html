@@ -1,0 +1,16 @@
+<div class="mb-3" [formGroup]="form()">
+    <label [for]="title()" class="text-secondary my-2">{{
+      title()
+    }}</label>
+    <input
+      [type]="fieldType()"
+      [id]="id()"
+      [formControlName]="control()"
+      class="form-control"
+      [placeholder]="fieldPlaceholder()"
+    />
+    @if (form().get(control())?.errors && form().get(control())?.touched) {
+      <p class="text-danger text-xs my-1 p-0">{{ errorMsg() }}</p>
+    }
+  </div>
+  

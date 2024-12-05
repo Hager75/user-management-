@@ -1,0 +1,9 @@
+<button [class]="'btn '+ extraClass()" (click)="onClick()" [disabled]="disabled()" type="button">
+    @if (icon()) {
+    <i [class]="icon()"></i>
+    }
+    @if (showLoader()) {
+    <span class="spinner-border spinner-border-sm me-2"></span>
+    }
+    <span>{{showLoader() ? 'Loading...' : text()}}</span>
+</button>

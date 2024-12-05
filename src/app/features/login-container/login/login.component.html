@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="row">
+        <div class="card col-lg-9 mx-auto col-12 shadow bg-body overflow-auto border-0  pe-4">
+            <div class="row align-items-center">
+                <div class="col-md-5 p-0  d-none d-md-flex">
+                    <img src="/assets/place-work.avif" alt="place-work" class="img-fluid">
+                </div>
+                <div class="col-12 col-md-6 mx-auto p-5 px-md-0">
+                    <div>
+                        <h4>Welcome back!</h4>
+                        <p class="text-secondary">Please login to access your <span class="color-primary">Spaces</span>
+                            Dashboard</p>
+                    </div>
+                    <form [formGroup]="form" (ngSubmit)="onsubmit(form)" class="d-flex flex-column">
+                        <app-input fieldPlaceholder="Email..." fieldType="email" [form]="form" title="Email"
+                            id="login__email" control="email" />
+
+                        <app-input fieldPlaceholder="••••••••" fieldType="password" [form]="form" title="Password"
+                            id="login__password" control="password" />
+                        <div class="d-flex align-items-center justify-content-between mb-1">
+                            <p class="color-primary mb-0">Forget password?</p>
+                            <div class="text-center">
+                                <app-button text="LOGIN" extraClass="btn-main-primary text-uppercase px-4"
+                                    [disabled]="form.invalid || isLoading()" [showLoader]="isLoading()" (btnClicked)="onsubmit(form)" />
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

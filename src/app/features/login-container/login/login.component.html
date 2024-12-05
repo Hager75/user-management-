@@ -12,8 +12,8 @@
                             Dashboard</p>
                     </div>
                     <form [formGroup]="form" (ngSubmit)="onsubmit(form)" class="d-flex flex-column">
-                        <app-input fieldPlaceholder="Username..." fieldType="text" [form]="form" title="Username"
-                            id="login__username" control="username" />
+                        <app-input fieldPlaceholder="Email..." fieldType="email" [form]="form" title="Email"
+                            id="login__email" control="email" />
 
                         <app-input fieldPlaceholder="••••••••" fieldType="password" [form]="form" title="Password"
                             id="login__password" control="password" />
@@ -21,7 +21,7 @@
                             <p class="color-primary mb-0">Forget password?</p>
                             <div class="text-center">
                                 <app-button text="LOGIN" extraClass="btn-main-primary text-uppercase px-4"
-                                    [disabled]="form.invalid || isLoading()" />
+                                    [disabled]="form.invalid || isLoading()" [showLoader]="isLoading()" (btnClicked)="onsubmit(form)" />
 
                             </div>
                         </div>

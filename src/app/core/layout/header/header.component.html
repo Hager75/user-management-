@@ -16,7 +16,7 @@
                   <a class="nav-link">CONTACT</a>
                 </li>
                 <li class="nav-item cursor-pointer">
-                    <app-button text="Login" extraClass="btn-main-primary text-uppercase px-4 ms-lg-3"/>
+                    <app-button [text]="(loginService.token$ | async) ? 'LogOut' : 'Login'" extraClass="btn-main-primary text-uppercase px-4 ms-lg-3" (btnClicked)="onClick()"/>
                 </li>
               </ul>
             </div>

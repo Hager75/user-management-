@@ -16,18 +16,17 @@ import { ButtonComponent } from '../../../shared/components/button/button.compon
 export class LoginComponent {
   isLoading = input(false);
   saveUserData = output<userFormData>();
+
   form = new FormGroup({
-    username: new FormControl("", [
-      Validators.required,
-      Validators.pattern(/^[a-zA-Z]+$/),
-    ]),
+    email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl<string>("",
       Validators.required),
   });
-  onsubmit(form: FormGroup) {
+  
+  onsubmit(form: FormGroup) {    
     if (form.valid) {
       const userData: userFormData = {
-        username: form.get("username")?.value ?? '',
+        email: form.get("email")?.value ?? '',
         password: form.get("password")?.value ?? ''
       }
       this.saveUserData.emit(userData);

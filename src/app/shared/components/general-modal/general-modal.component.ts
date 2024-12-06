@@ -31,6 +31,7 @@ export class GeneralModalComponent {
   closeModal = output();
   confirm = output();
   title = input('');
+  isLoading = input(false); 
   constructor() {
     effect(() => {
       if (this.isShowModal() === true) {

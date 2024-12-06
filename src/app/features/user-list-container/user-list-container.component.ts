@@ -118,6 +118,22 @@ export class UserListContainerComponent implements OnInit {
       ).subscribe();
   }
 
+  updateUser(user:User): void{
+    this.isShowUserLoading.set(true);
+    this.usersService
+      .updateUser(this.selectedUser()?.id || 1 ,user)
+      .pipe(
+        tap((res) => {
+          this.toastService.success('The User has been updated successfully');
+        }),
+        finalize(() => {
+          this.isShowUserLoading.set(false);
+          this.userForm.reset();
+          this.closeSideModal();
+        })
+      ).subscribe();
+  }
+
   closeUserModal(): void {
     this.showUserModal.set(false);
   }
@@ -126,6 +142,9 @@ export class UserListContainerComponent implements OnInit {
     if (this.modalInfo().type === this.modalType.DELETE) {
       this.onDeleteUser(this.selectedUser()?.id);
     } else if (this.modalInfo().type === this.modalType.EDIT) {
+      const userData = this.getUserData();
+      this.updateUser(userData);
+
     } else if (
       this.modalInfo().type === this.modalType.ADD &&
       this.userForm.valid
@@ -149,6 +168,7 @@ export class UserListContainerComponent implements OnInit {
   }
   editUser(): void {
     this.showUserModal.set(true);
+    this.setUserForm();
     this.modalInfo.set({
       type: ModalType.EDIT,
       confirmBtnTxt: 'Save',
@@ -173,5 +193,11 @@ export class UserListContainerComponent implements OnInit {
       title:'Add User'
     });
     this.showUserModal.set(true);
+  }
+  setUserForm():void{
+    this.userForm.setValue({
+      name:`${this.selectedUser()?.first_name} ${this.selectedUser()?.last_name}`,
+      job: `${this.selectedUser()?.email}` 
+    })
   }
 }

@@ -51,3 +51,10 @@ export interface AddUserResponse extends User {
   createdAt: string;
   id: string;
 }
+
+export interface UpdateUserResponse extends User {
+  updatedAt: string;
+  id: string;
+}
+
+

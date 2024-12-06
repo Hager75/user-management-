@@ -11,6 +11,5 @@ import { InputComponent } from '../../../shared/components/input/input.component
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddEditUserComponent {
-  isLoading = input(false); 
   form = input.required<FormGroup>();
  }

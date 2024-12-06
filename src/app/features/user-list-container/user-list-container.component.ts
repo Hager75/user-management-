@@ -149,6 +149,7 @@ export class UserListContainerComponent implements OnInit {
 
   closeUserModal(): void {
     this.showUserModal.set(false);
+    this.userForm.reset();
   }
 
   handleConfirm(): void {

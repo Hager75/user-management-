@@ -4,7 +4,7 @@
     </div>
     <div class="offcanvas-body text-center mt-5">
       @if (isLoading()) {
-          <span class="spinner-border spinner-border me-2"></span>
+          <span class="spinner-border spinner-border color-primary me-2"></span>
       }@else if(selectedUser() && !isLoading()) {
         <div class="img-wrap">
             <img [src]="selectedUser()?.avatar" alt="profile" class="img-fluid">

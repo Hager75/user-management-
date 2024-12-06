@@ -5,19 +5,20 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { finalize, tap } from 'rxjs';
+import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 
 import { UserListComponent } from './user-list/user-list.component';
+import { AddEditUserComponent } from './add-edit-user/add-edit-user.component';
 import { UserListHeaderComponent } from './user-list-header/user-list-header.component';
-import { UsersService } from '../../core/services/users.service';
-import { User, UserInfo } from '../../core/models/user.model';
-import { finalize, tap } from 'rxjs';
-import { ToastService } from '../../core/services/toast.service';
-import { ModalType } from '../../core/enums/shared.enum';
-import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { GeneralModalComponent } from '../../shared/components/general-modal/general-modal.component';
 import { SideModalComponent } from '../../shared/components/side-modal/side-modal.component';
-import { AddEditUserComponent } from './add-edit-user/add-edit-user.component';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { User, UserInfo } from '../../core/models/user.model';
+import { UsersService } from '../../core/services/users.service';
+import { ToastService } from '../../core/services/toast.service';
+import { ModalType } from '../../core/enums/shared.enum';
+import { getModal } from '../../shared/constants/user-list-const';
 
 @Component({
   selector: 'app-user-list-container',
@@ -36,26 +37,36 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class UserListContainerComponent implements OnInit {
   private offcanvasService = inject(NgbOffcanvas);
   private usersService = inject(UsersService);
+  toastService = inject(ToastService);
   isLoading = signal(false);
   isOpenSideModal = signal(false);
   isShowUserInfoLoading = signal(false);
   userList = signal<UserInfo[]>([]);
   selectedUser = signal<UserInfo | null>(null);
-  toastService = inject(ToastService);
-  currentPage = 1;
-  modalInfo = signal({
-    type: ModalType.DELETE,
-    confirmBtnTxt: 'Yes',
-    cancelBtnTxt: 'Cancel',
-    title:'Delete User'
-  });
+  modalInfo = signal(getModal(ModalType.DELETE));
   showUserModal = signal(false);
   isShowUserLoading = signal(false);
+  currentPage = 1;
   modalType = ModalType;
   userForm = new FormGroup({
     name: new FormControl<string>('', [Validators.required]),
     job: new FormControl<string>('', Validators.required),
   });
+  USER_ACTION = {
+    [ModalType.DELETE]: () => {
+      this.onDeleteUser(this.selectedUser()?.id);
+    },
+    [ModalType.EDIT]: () => {
+      const userData = this.getUserData();
+      this.updateUser(userData);
+    },
+    [ModalType.ADD]: () => {
+      if (this.userForm.valid) {
+        const userData = this.getUserData();
+        this.addUser(userData);
+      }
+    },
+  };
   ngOnInit(): void {
     this.isLoading.set(true);
     this.usersService
@@ -103,7 +114,7 @@ export class UserListContainerComponent implements OnInit {
       .subscribe();
   }
 
-  addUser(user:User): void {
+  addUser(user: User): void {
     this.isShowUserLoading.set(true);
     this.usersService
       .addUser(user)
@@ -115,23 +126,25 @@ export class UserListContainerComponent implements OnInit {
           this.isShowUserLoading.set(false);
           this.userForm.reset();
         })
-      ).subscribe();
+      )
+      .subscribe();
   }
 
-  updateUser(user:User): void{
-    this.isShowUserLoading.set(true);
+  updateUser(user: User): void {
+    this.isShowUserInfoLoading.set(true);
     this.usersService
-      .updateUser(this.selectedUser()?.id || 1 ,user)
+      .updateUser(this.selectedUser()?.id || 1, user)
       .pipe(
         tap((res) => {
           this.toastService.success('The User has been updated successfully');
         }),
         finalize(() => {
-          this.isShowUserLoading.set(false);
+          this.isShowUserInfoLoading.set(false);
           this.userForm.reset();
           this.closeSideModal();
         })
-      ).subscribe();
+      )
+      .subscribe();
   }
 
   closeUserModal(): void {
@@ -139,20 +152,9 @@ export class UserListContainerComponent implements OnInit {
   }
 
   handleConfirm(): void {
-    if (this.modalInfo().type === this.modalType.DELETE) {
-      this.onDeleteUser(this.selectedUser()?.id);
-    } else if (this.modalInfo().type === this.modalType.EDIT) {
-      const userData = this.getUserData();
-      this.updateUser(userData);
-
-    } else if (
-      this.modalInfo().type === this.modalType.ADD &&
-      this.userForm.valid
-    ) {
-      const userData = this.getUserData();
-      this.addUser(userData);
-    }
+    this.USER_ACTION[this.modalInfo().type]();
   }
+
   getUserData(): User {
     const userData: User = {
       name: this.userForm.get('name')?.value ?? '',
@@ -166,38 +168,29 @@ export class UserListContainerComponent implements OnInit {
     this.isOpenSideModal.set(false);
     this.offcanvasService.dismiss();
   }
+
   editUser(): void {
     this.showUserModal.set(true);
     this.setUserForm();
-    this.modalInfo.set({
-      type: ModalType.EDIT,
-      confirmBtnTxt: 'Save',
-      cancelBtnTxt: 'Cancel',
-      title:'Edit User'
-    });
+    this.modalInfo.set(getModal(ModalType.EDIT));
   }
+
   deleteUser(): void {
     this.showUserModal.set(true);
-    this.modalInfo.set({
-      type: ModalType.DELETE,
-      confirmBtnTxt: 'Yes',
-      cancelBtnTxt: 'Cancel',
-      title:'Delete User'
-    });
+    this.modalInfo.set(getModal(ModalType.DELETE));
   }
+
   openUserModal(): void {
-    this.modalInfo.set({
-      type: ModalType.ADD,
-      confirmBtnTxt: 'Save',
-      cancelBtnTxt: 'Cancel',
-      title:'Add User'
-    });
+    this.modalInfo.set(getModal(ModalType.ADD));
     this.showUserModal.set(true);
   }
-  setUserForm():void{
+  
+  setUserForm(): void {
     this.userForm.setValue({
-      name:`${this.selectedUser()?.first_name} ${this.selectedUser()?.last_name}`,
-      job: `${this.selectedUser()?.email}` 
-    })
+      name: `${this.selectedUser()?.first_name} ${
+        this.selectedUser()?.last_name
+      }`,
+      job: `${this.selectedUser()?.email}`,
+    });
   }
 }

@@ -1,6 +1,10 @@
 <app-user-list-header (showAddUserModal)="openUserModal()" />
 @if (!isLoading()) {
 <app-user-list [users]="userList()" [selectedUser]="selectedUser()" (handleUserClick)="handleUserClick($event)" />
+}@else {
+    <div class="spinner-container d-flex align-items-center justify-content-center">
+        <span class="spinner-border spinner-border spinner color-primary me-2"></span>
+    </div>
 }
 <app-side-modal [isShowModal]="isOpenSideModal()" [isLoading]="isShowUserInfoLoading()" [selectedUser]="selectedUser()"
     (closeSideModal)="closeSideModal()" (editUser)="editUser()" (deleteUser)="deleteUser()" />
@@ -16,3 +20,4 @@
     <app-add-edit-user [form]="userForm" />
     }
 </app-general-modal>
+

@@ -1,21 +1,15 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  computed,
   effect,
   inject,
   input,
   output,
-  TemplateRef,
-  ViewChild,
   viewChild,
 } from '@angular/core';
 import {
-  ModalDismissReasons,
   NgbDatepickerModule,
   NgbModal,
-  NgbModalRef,
 } from '@ng-bootstrap/ng-bootstrap';
 import { ButtonComponent } from '../button/button.component';
 
@@ -35,7 +29,6 @@ export class GeneralModalComponent {
   contentTemplate = viewChild('content');
   closeModal = output();
   confirm = output();
-
   constructor() {
     effect(() => {
       if (this.isShowModal() === true) {

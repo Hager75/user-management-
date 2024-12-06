@@ -1,4 +1,4 @@
-<div class="card col-lg-9 mx-auto col-12 shadow bg-body overflow-auto border-0 ps-4 py-2 my-5  rounded-4" >
+<div class="card col-lg-9 mx-auto col-10 shadow bg-body overflow-auto border-0 ps-4 py-2 my-5  rounded-4" >
     <div class="d-flex justify-content-between align-items-center text-secondary pe-4 my-2">
         <span>User</span>
         <span>Actions</span>
@@ -10,37 +10,6 @@
         }
 
     }
-    <ng-template #content let-offcanvas>
-        <div class="offcanvas-header">
-            <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
-        </div>
-        <div class="offcanvas-body text-center mt-5">
-          @if (isShowLoader()) {
-              <span class="spinner-border spinner-border me-2"></span>
-          }@else if(selectedUser() && !isShowLoader()) {
-            <div class="img-wrap">
-                <img [src]="selectedUser()?.avatar" alt="profile" class="img-fluid">
-            </div>
-            <h3 class="m-3">{{selectedUser()?.first_name}} {{selectedUser()?.last_name}}</h3>
-            <div class="actions-btns">
-                <app-button text="Edit" icon="fa-solid fa-pen" extraClass="btn-main-primary rounded-4 ms-1 me-3 px-5" (btnClicked)="editUser()"/>
-              <app-button text="Delete" icon="fa-solid fa-trash color-primary" extraClass="btn-outline-primary color-primary px-5  rounded-4 mx-1" (btnClicked)="deleteUser()" />
-      
-            </div>
-          } 
 
-
-        </div>
-    </ng-template>
 </div>
 
-<app-general-modal [isShowModal]="showUserModal()" (closeModal)="closeUserModal()" (confirm)="handleConfirm()" [confirmBtnTitle]="modalInfo().confirmBtnTxt" [cancelBtnTitle]="modalInfo().cancelBtnTxt">
-    @if (modalInfo().type === modalType.DELETE) {
-        <div class="d-flex flex-column align-items-center">
-            <h5 class="text-secondary">Are you sure you want to delete</h5>
-            <p class="color-primary">{{selectedUser()?.first_name}} {{selectedUser()?.last_name}}</p>
-        </div>
-    }
-
-
-</app-general-modal>

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { UserListResponse, UserResponse } from '../models/user.model';
+import { Observable } from 'rxjs';
+
+import { AddUserResponse, UpdateUserResponse, User, UserListResponse, UserResponse } from '../models/user.model';
 
 
 @Injectable({
@@ -22,5 +23,11 @@ export class UsersService {
     return this.http.delete<UserListResponse>('users', { params: { id: id.toString() } });
   }
 
-
+  addUser(user:User):Observable<AddUserResponse> {
+    return this.http.post<AddUserResponse>(`users`, user);
+  }
+ 
+  updateUser(id:number,user:User):Observable<UpdateUserResponse> {
+    return this.http.put<UpdateUserResponse>(`users/${id}`, user);
+  }
 }

@@ -3,7 +3,7 @@
     <i [class]="icon()"></i>
     }
     @if (showLoader()) {
-    <span class="spinner-border spinner-border-sm me-2"></span>
+    <span class="spinner-border spinner-border-sm color-primary me-2"></span>
     }
     @if (text()) {
         <span [ngClass]="icon() ? 'ms-2' : ''">{{showLoader() ? 'Loading...' : text()}}</span>

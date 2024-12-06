@@ -23,7 +23,6 @@ import { UserItemComponent } from '../user-item/user-item.component';
 })
 export class UserListComponent {
   users = input.required<UserInfo[]>();
-
   selectedUser = input<UserInfo | null>(null);
   handleUserClick = output<number>();
   handleEditClick = output<number>();

@@ -1,17 +1,23 @@
-<app-user-list-header />
+<app-user-list-header (showAddUserModal)="openUserModal()" />
 @if (!isLoading()) {
 <app-user-list [users]="userList()" [selectedUser]="selectedUser()" (handleUserClick)="handleUserClick($event)" />
+}@else {
+    <div class="spinner-container d-flex align-items-center justify-content-center">
+        <span class="spinner-border spinner-border spinner color-primary me-2"></span>
+    </div>
 }
-    <app-side-modal [isShowModal]="isOpenSideModal()" [isLoading]="isShowUserInfoLoading()" [selectedUser]="selectedUser()"
-        (closeSideModal)="closeSideModal()" (editUser)="editUser()" (deleteUser)="deleteUser()" />
-<app-general-modal [isShowModal]="showUserModal()" (closeModal)="closeUserModal()" (confirm)="handleConfirm()"
-    [confirmBtnTitle]="modalInfo().confirmBtnTxt" [cancelBtnTitle]="modalInfo().cancelBtnTxt">
+<app-side-modal [isShowModal]="isOpenSideModal()" [isLoading]="isShowUserInfoLoading()" [selectedUser]="selectedUser()"
+    (closeSideModal)="closeSideModal()" (editUser)="editUser()" (deleteUser)="deleteUser()" />
+
+<app-general-modal [isBtnDisabled]="modalInfo().type === modalType.ADD && userForm.invalid" [isShowModal]="showUserModal()" (closeModal)="closeUserModal()" (confirm)="handleConfirm()"
+    [confirmBtnTitle]="modalInfo().confirmBtnTxt" [isLoading]="isShowUserLoading()" [cancelBtnTitle]="modalInfo().cancelBtnTxt" [title]="modalInfo().title">
     @if (modalInfo().type === modalType.DELETE) {
     <div class="d-flex flex-column align-items-center">
         <h5 class="text-secondary">Are you sure you want to delete</h5>
         <p class="color-primary">{{selectedUser()?.first_name}} {{selectedUser()?.last_name}}</p>
     </div>
-    }@else if (modalInfo().type === modalType.EDIT) {
-    <p>edit</p>
+    }@else if (modalInfo().type === modalType.ADD || modalInfo().type === modalType.EDIT) {
+    <app-add-edit-user [form]="userForm" />
     }
 </app-general-modal>
+

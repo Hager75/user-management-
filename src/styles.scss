@@ -5,8 +5,14 @@ body{
 .color-primary {
   color: #7952b3 !important;
 }
+
 .cursor-pointer{
     cursor: pointer;
+}
+
+.w-9rem {
+  width: 9rem;
+  max-width: 100%;
 }
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';

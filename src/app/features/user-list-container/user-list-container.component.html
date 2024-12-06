@@ -1,5 +1,5 @@
 <app-user-list-header/>
 @if (!isLoading()) {
-    <app-user-list [users]="userList()" [isShowLoader]="isShowUserInfoLoading()" [selectedUser]="selectedUser()" (handleUserClick)="handleUserClick($event)" />
+    <app-user-list [users]="userList()" (handleDeleteUser)="deleteUser($event)" [isShowLoader]="isShowUserInfoLoading()" [selectedUser]="selectedUser()" (handleUserClick)="handleUserClick($event)" />
 }
 

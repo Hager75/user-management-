@@ -13,9 +13,13 @@ export class UsersService {
   getUserList(data: { page: number }): Observable<UserListResponse> {
     return this.http.get<UserListResponse>('users', { params: { page: data.page.toString() } });
   }
-  
+
   getUserInfo(id:number):Observable<UserResponse>{
     return this.http.get<UserResponse>('users', { params: { id: id.toString() } });
+  }
+
+  deleteUser(id:number): Observable<UserListResponse> {
+    return this.http.delete<UserListResponse>('users', { params: { id: id.toString() } });
   }
 
 

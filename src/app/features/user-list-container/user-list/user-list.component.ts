@@ -12,11 +12,18 @@ import { NgbOffcanvas, NgbOffcanvasModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserInfo } from '../../../core/models/user.model';
 import { UserItemComponent } from '../user-item/user-item.component';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { GeneralModalComponent } from '../../../shared/components/general-modal/general-modal.component';
+import { ModalType } from '../../../core/enums/shared.enum';
 
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [UserItemComponent, NgbOffcanvasModule, ButtonComponent],
+  imports: [
+    UserItemComponent,
+    NgbOffcanvasModule,
+    ButtonComponent,
+    GeneralModalComponent,
+  ],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -26,11 +33,18 @@ export class UserListComponent {
   users = input.required<UserInfo[]>();
   isShowLoader = input(false);
   showUserModal = signal(false);
-  showDeleteUserModal = signal(false);
   selectedUser = input<UserInfo | null>(null);
   handleUserClick = output<number>();
+  handleEditClick = output<number>();
+  handleDeleteUser = output<number | undefined>();
+  handleAddClick = output<number>();
   contentTemplate = viewChild('content');
-
+  modalInfo = signal({
+    type: ModalType.DELETE,
+    confirmBtnTxt: 'Yes',
+    cancelBtnTxt: 'Cancel',
+  });
+  modalType = ModalType;
   userClicked(id: number): void {
     this.openNoBackdrop();
     this.handleUserClick.emit(id);
@@ -42,12 +56,28 @@ export class UserListComponent {
       position: 'end',
     });
   }
+
   editUser(): void {
     this.showUserModal.set(true);
-    this.offcanvasService.dismiss();
   }
   deleteUser(): void {
-    this.showDeleteUserModal.set(true);
+    this.showUserModal.set(true);
+    this.modalInfo.set({
+      type: ModalType.DELETE,
+      confirmBtnTxt: 'Yes',
+      cancelBtnTxt: 'Cancel',
+    });
+  }
+
+  closeUserModal(): void {
+    this.showUserModal.set(false);
+    this.offcanvasService.dismiss();
+  }
+
+  handleConfirm():void {
+    if(this.modalInfo().type === this.modalType.DELETE){
+      this.handleDeleteUser.emit(this.selectedUser()?.id);
+    }
     this.offcanvasService.dismiss();
 
   }

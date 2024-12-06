@@ -1,0 +1,13 @@
+<div class="user-item py-3 ps-3 rounded-start-4 d-flex justify-content-between align-items-center" (click)="onUserClicked(user().id)">
+    <div class="d-flex align-items-center">
+        <div class="img-wrap">
+            <img [src]="user().avatar" alt="profile" class="img-fluid">
+        </div>
+        <p class="mb-0 mx-3">{{user().first_name}} {{user().last_name}}</p>
+    </div>
+    <div class="actions-btn me-4">
+        <app-button text="" icon="fa-solid fa-trash color-primary" extraClass="btn-outline-primary btn-hover-white rounded mx-1" />
+        <app-button text="" icon="fa-solid fa-pen color-primary" extraClass="btn-outline-primary btn-hover-white rounded ms-1 me-3" />
+        <i class="fa-solid fa-chevron-right"></i>
+    </div>
+</div>

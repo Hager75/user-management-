@@ -6,3 +6,9 @@ export enum ToastType {
     ERROR = 'error',
     SUCCESS= 'success'
 } 
+
+export enum ModalType {
+    DELETE = 'delete',
+    ADD = 'add',
+    EDIT  = 'edit'
+}

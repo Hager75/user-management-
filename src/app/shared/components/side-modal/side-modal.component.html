@@ -1,0 +1,20 @@
+<ng-template #content let-offcanvas>
+    <div class="offcanvas-header">
+        <button type="button" class="btn-close" aria-label="Close" (click)="onClose()"></button>
+    </div>
+    <div class="offcanvas-body text-center mt-5">
+      @if (isLoading()) {
+          <span class="spinner-border spinner-border me-2"></span>
+      }@else if(selectedUser() && !isLoading()) {
+        <div class="img-wrap">
+            <img [src]="selectedUser()?.avatar" alt="profile" class="img-fluid">
+        </div>
+        <h3 class="m-3">{{selectedUser()?.first_name}} {{selectedUser()?.last_name}}</h3>
+        <div class="actions-btns">
+            <app-button text="Edit" icon="fa-solid fa-pen" extraClass="btn-main-primary rounded-4 ms-1 me-3 px-5" (btnClicked)="onEdit()"/>
+            <app-button text="Delete" icon="fa-solid fa-trash color-primary" extraClass="btn-outline-primary color-primary px-5  rounded-4 mx-1" (btnClicked)="onDelete()" />
+  
+        </div>
+      } 
+    </div>
+</ng-template>

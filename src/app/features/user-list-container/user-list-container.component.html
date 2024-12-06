@@ -1,1 +1,17 @@
-<p>user-list-container works!</p>,
+<app-user-list-header />
+@if (!isLoading()) {
+<app-user-list [users]="userList()" [selectedUser]="selectedUser()" (handleUserClick)="handleUserClick($event)" />
+}
+    <app-side-modal [isShowModal]="isOpenSideModal()" [isLoading]="isShowUserInfoLoading()" [selectedUser]="selectedUser()"
+        (closeSideModal)="closeSideModal()" (editUser)="editUser()" (deleteUser)="deleteUser()" />
+<app-general-modal [isShowModal]="showUserModal()" (closeModal)="closeUserModal()" (confirm)="handleConfirm()"
+    [confirmBtnTitle]="modalInfo().confirmBtnTxt" [cancelBtnTitle]="modalInfo().cancelBtnTxt">
+    @if (modalInfo().type === modalType.DELETE) {
+    <div class="d-flex flex-column align-items-center">
+        <h5 class="text-secondary">Are you sure you want to delete</h5>
+        <p class="color-primary">{{selectedUser()?.first_name}} {{selectedUser()?.last_name}}</p>
+    </div>
+    }@else if (modalInfo().type === modalType.EDIT) {
+    <p>edit</p>
+    }
+</app-general-modal>

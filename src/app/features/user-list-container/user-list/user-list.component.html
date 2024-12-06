@@ -1,1 +1,15 @@
-<p>user-list works!</p>,
+<div class="card col-lg-9 mx-auto col-10 shadow bg-body overflow-auto border-0 ps-4 py-2 my-5  rounded-4" >
+    <div class="d-flex justify-content-between align-items-center text-secondary pe-4 my-2">
+        <span>User</span>
+        <span>Actions</span>
+    </div>
+    @for (user of users(); track user.id) {
+        <app-user-item [user]="user" (userClicked)="userClicked($event)"/>
+        @if (!$last) {
+            <hr class="text-secondary"/>
+        }
+
+    }
+
+</div>
+

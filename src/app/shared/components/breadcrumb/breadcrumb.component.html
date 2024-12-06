@@ -1,0 +1,10 @@
+<nav style="--bs-breadcrumb-divider: '/';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      @for (breadcrumb of breadcrumbs; track breadcrumb.label) {
+        <li class="breadcrumb-item color-primary">
+              {{ breadcrumb.label }}
+        </li>
+      }
+    </ol>
+  </nav>
+  

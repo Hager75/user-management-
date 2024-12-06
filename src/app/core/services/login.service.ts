@@ -19,8 +19,8 @@ export class LoginService {
   );
 
 
-  login(data:userFormData): Observable<any>{
-    return this.http.post(`login`, data);
+  login(data:userFormData): Observable<loginUserResponse>{
+    return this.http.post<loginUserResponse>(`login`, data);
   }
 
   logout(): void {

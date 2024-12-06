@@ -26,9 +26,11 @@ export class GeneralModalComponent {
   isShowModal = input.required();
   confirmBtnTitle = input('Save');
   cancelBtnTitle = input('Cancel');
+  isBtnDisabled = input(false);
   contentTemplate = viewChild('content');
   closeModal = output();
   confirm = output();
+  title = input('');
   constructor() {
     effect(() => {
       if (this.isShowModal() === true) {

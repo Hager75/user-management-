@@ -1,6 +1,6 @@
 <ng-template #content let-modal>
 	<div class="modal-header">
-		<h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+		<h4 class="modal-title" id="modal-basic-title">{{title()}}</h4>
 		<button type="button" class="btn-close" aria-label="Close" (click)="close(modal)"></button>
 	</div>
 	<div class="modal-body">
@@ -8,9 +8,10 @@
 	</div>
 	<div class="modal-footer d-flex justify-content-center align-items-center">
         <app-button [text]="cancelBtnTitle()" extraClass="btn-outline-primary color-primary mx-2 w-9rem " (btnClicked)="close(modal)" />
-        <app-button [text]="confirmBtnTitle()" extraClass="btn-main-primary mx-2  w-9rem" (btnClicked)="onSave(modal)" />
+        <app-button [text]="confirmBtnTitle()" extraClass="btn-main-primary mx-2  w-9rem" [disabled]="isBtnDisabled()" (btnClicked)="onSave(modal)" />
 	</div>
 </ng-template>
+
 
 
 

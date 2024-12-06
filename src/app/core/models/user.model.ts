@@ -22,22 +22,32 @@ export interface UserInfo {
   avatar: string;
 }
 
-export interface UserListResponse{
-    page: number;
-    per_page:  number;
-    total:  number;
-    total_pages:  number;
-    data:UserInfo[];
-    support:{
-        url:string;
-        text:string
-    }
+export interface UserListResponse {
+  page: number;
+  per_page: number;
+  total: number;
+  total_pages: number;
+  data: UserInfo[];
+  support: {
+    url: string;
+    text: string;
+  };
 }
 
 export interface UserResponse {
   data: UserInfo;
-  support:{
-      url:string;
-      text:string
-  }
+  support: {
+    url: string;
+    text: string;
+  };
+}
+
+export interface User {
+  name: string;
+  job: string;
+}
+
+export interface AddUserResponse extends User {
+  createdAt: string;
+  id: string;
 }

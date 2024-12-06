@@ -1,0 +1,7 @@
+<form [formGroup]="form()"  class="d-flex flex-column">
+    <app-input fieldPlaceholder="Name..." fieldType="text" [form]="form()" title="Name"
+        id="username" control="name" />
+
+    <app-input fieldPlaceholder="Job Title..." fieldType="text" [form]="form()" title="Job Title"
+        id="job-title" control="job" />
+</form>

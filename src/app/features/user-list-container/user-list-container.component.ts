@@ -9,18 +9,25 @@ import {
 import { UserListComponent } from './user-list/user-list.component';
 import { UserListHeaderComponent } from './user-list-header/user-list-header.component';
 import { UsersService } from '../../core/services/users.service';
-import { UserInfo } from '../../core/models/user.model';
+import { User, UserInfo } from '../../core/models/user.model';
 import { finalize, tap } from 'rxjs';
 import { ToastService } from '../../core/services/toast.service';
 import { ModalType } from '../../core/enums/shared.enum';
 import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { GeneralModalComponent } from '../../shared/components/general-modal/general-modal.component';
 import { SideModalComponent } from '../../shared/components/side-modal/side-modal.component';
+import { AddEditUserComponent } from './add-edit-user/add-edit-user.component';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-user-list-container',
   standalone: true,
-  imports: [UserListComponent, UserListHeaderComponent,GeneralModalComponent, SideModalComponent
+  imports: [
+    UserListComponent,
+    UserListHeaderComponent,
+    GeneralModalComponent,
+    SideModalComponent,
+    AddEditUserComponent,
   ],
   templateUrl: './user-list-container.component.html',
   styleUrl: './user-list-container.component.scss',
@@ -40,10 +47,15 @@ export class UserListContainerComponent implements OnInit {
     type: ModalType.DELETE,
     confirmBtnTxt: 'Yes',
     cancelBtnTxt: 'Cancel',
+    title:'Delete User'
   });
   showUserModal = signal(false);
+  isShowUserLoading = signal(false);
   modalType = ModalType;
-
+  userForm = new FormGroup({
+    name: new FormControl<string>('', [Validators.required]),
+    job: new FormControl<string>('', Validators.required),
+  });
   ngOnInit(): void {
     this.isLoading.set(true);
     this.usersService
@@ -58,7 +70,6 @@ export class UserListContainerComponent implements OnInit {
       )
       .subscribe();
   }
-
 
   handleUserClick(id: number): void {
     this.isShowUserInfoLoading.set(true);
@@ -80,28 +91,58 @@ export class UserListContainerComponent implements OnInit {
     this.isShowUserInfoLoading.set(true);
     this.usersService
       .deleteUser(id!)
-      .pipe(tap((res) => {
-        this.toastService.success('The User has been deleted successfully');
-        this.closeSideModal();
-      }),finalize(()=>{
-        this.isShowUserInfoLoading.set(false);
-
-      }))
+      .pipe(
+        tap((res) => {
+          this.toastService.success('The User has been deleted successfully');
+          this.closeSideModal();
+        }),
+        finalize(() => {
+          this.isShowUserInfoLoading.set(false);
+        })
+      )
       .subscribe();
+  }
+
+  addUser(user:User): void {
+    this.isShowUserLoading.set(true);
+    this.usersService
+      .addUser(user)
+      .pipe(
+        tap((res) => {
+          this.toastService.success('The User has been Added successfully');
+        }),
+        finalize(() => {
+          this.isShowUserLoading.set(false);
+          this.userForm.reset();
+        })
+      ).subscribe();
   }
 
   closeUserModal(): void {
     this.showUserModal.set(false);
   }
 
-  handleConfirm():void {
-    if(this.modalInfo().type === this.modalType.DELETE){
+  handleConfirm(): void {
+    if (this.modalInfo().type === this.modalType.DELETE) {
       this.onDeleteUser(this.selectedUser()?.id);
-    }else if (this.modalInfo().type === this.modalType.EDIT){
+    } else if (this.modalInfo().type === this.modalType.EDIT) {
+    } else if (
+      this.modalInfo().type === this.modalType.ADD &&
+      this.userForm.valid
+    ) {
+      const userData = this.getUserData();
+      this.addUser(userData);
     }
   }
+  getUserData(): User {
+    const userData: User = {
+      name: this.userForm.get('name')?.value ?? '',
+      job: this.userForm.get('job')?.value ?? '',
+    };
+    return userData;
+  }
 
-  closeSideModal():void {
+  closeSideModal(): void {
     this.selectedUser.set(null);
     this.isOpenSideModal.set(false);
     this.offcanvasService.dismiss();
@@ -112,8 +153,8 @@ export class UserListContainerComponent implements OnInit {
       type: ModalType.EDIT,
       confirmBtnTxt: 'Save',
       cancelBtnTxt: 'Cancel',
+      title:'Edit User'
     });
-
   }
   deleteUser(): void {
     this.showUserModal.set(true);
@@ -121,6 +162,16 @@ export class UserListContainerComponent implements OnInit {
       type: ModalType.DELETE,
       confirmBtnTxt: 'Yes',
       cancelBtnTxt: 'Cancel',
+      title:'Delete User'
     });
+  }
+  openUserModal(): void {
+    this.modalInfo.set({
+      type: ModalType.ADD,
+      confirmBtnTxt: 'Save',
+      cancelBtnTxt: 'Cancel',
+      title:'Add User'
+    });
+    this.showUserModal.set(true);
   }
 }
